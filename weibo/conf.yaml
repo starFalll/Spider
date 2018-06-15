@@ -1,0 +1,24 @@
+#change your mysql user and password
+db:
+    host: 127.0.0.1
+    port: 3306
+    user: root
+    password: password
+    db_name: weibo
+    db_type: mysql
+#please add your uid
+
+uids:
+    1: 6073302163
+
+#please add your account cookies(small count,not big count,becaues may be banned)
+cookies:
+    1: _T_WM=17ddf36185fa05928df85390206cc99e; MLOGIN=0; M_WEIBOCN_PARAMS=uicode%3D10000011%26fid%3D102803; SUB=_2A252Jm93DeRhGeBK7lAV8yfIyzyIHXVV6XE_rDV6PUJbkdBeLVfVkW1NR7ex31922SwVAsr-r8BtHMH-tjyP5bYE; SUHB=079j4ILhM97JcL; SCF=Ai5UyFtcjzJlxDyblLOeU87DbFXQsoI_q8c_61YX8Q7XQY5dGTS4tzUsiYHhR6sJ_eeVuzSj6ve8Tcmz1QU1EOc.; SSOLoginState=1528962855
+    2: _T_WM=17ddf36185fa05928df85390206cc99e; SUB=_2A252Jm93DeRhGeBK7lAV8yfIyzyIHXVV6XE_rDV6PUJbkdBeLVfVkW1NR7ex31922SwVAsr-r8BtHMH-tjyP5bYE; SUHB=079j4ILhM97JcL; SCF=Ai5UyFtcjzJlxDyblLOeU87DbFXQsoI_q8c_61YX8Q7XQY5dGTS4tzUsiYHhR6sJ_eeVuzSj6ve8Tcmz1QU1EOc.; SSOLoginState=1529033043; ALF=1531625043
+    3: _T_WM=17ddf36185fa05928df85390206cc99e; SUB=_2A252Jm93DeRhGeBK7lAV8yfIyzyIHXVV6XE_rDV6PUJbkdBeLVfVkW1NR7ex31922SwVAsr-r8BtHMH-tjyP5bYE; SUHB=079j4ILhM97JcL; SCF=Ai5UyFtcjzJlxDyblLOeU87DbFXQsoI_q8c_61YX8Q7XQY5dGTS4tzUsiYHhR6sJ_eeVuzSj6ve8Tcmz1QU1EOc.; SSOLoginState=1529033149; ALF=1531625149
+
+user_agents:
+    1: 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1]'
+    2: 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36'
+    3: 'Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36'
+

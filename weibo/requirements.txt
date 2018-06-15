@@ -1,0 +1,4 @@
+PyYAML==3.12
+requests==2.13.0
+SQLAlchemy==1.1.9
+PyMySQL==0.7.11
