@@ -146,38 +146,44 @@ def getmain(res,uid,table,conn,url,headers,cookie):
         ins = ins.on_duplicate_key_update(weibo_cont=pymysql.escape_string(dys[i]))
         conn.execute(ins)
 
-if __name__ == '__main__':
+
+def main():
     conf = loadconf_db(os.path.abspath('conf.yaml'))  # 获取配置文件的内容
     db = conf.get('db')
     uids = conf.get('uids')
-    cookies=conf.get('cookies')
-    user_agents=conf.get('user_agents')
+    cookies = conf.get('cookies')
+    user_agents = conf.get('user_agents')
     uids = list(uids.values())
-    cookies=list(cookies.values())
-    user_agents=list(user_agents.values())
+    cookies = list(cookies.values())
+    user_agents = list(user_agents.values())
 
-    #随机选择，防止被ban
+    # 随机选择，防止被ban
 
     headers = {
         'User_Agent': random.choice(user_agents)
     }
     cookie = random.choice(cookies)
-    uid=random.choice(uids)
+    uid = random.choice(uids)
     # 这个入口仍然有效
     login_url = 'https://m.weibo.cn/u/'
     infourl = 'https://weibo.cn/' + str(uid) + '/info'
-    mainurl = 'https://weibo.cn/'+str(uid)
+    mainurl = 'https://weibo.cn/' + str(uid)
 
     connect_str = 'mysql+pymysql://' + db['user'] + ':' + db['password'] + '@127.0.0.1:3306/weibo?charset=utf8mb4'
     engine = create_engine(connect_str, encoding='utf-8')
     conn = engine.connect()
+    metadata = MetaData(engine)
 
-    metadata=MetaData(engine)
-    WBUser = Table('WBUser',metadata, autoload=True)#Table Reflection 个人信息表
-    WBData = Table('WBData',metadata, autoload=True)#动态表
-    cookie=getcookies(cookie)
-    resinfo = gethtml(infourl,headers,cookie)#抓取资料页的信息
-    resmain = gethtml(mainurl,headers,cookie)#抓取用户主页信息
-    getinfo(resinfo,uid,WBUser,conn)
-    getmain(resmain,uid,WBData,conn,mainurl,headers,cookie)
+    WBUser = Table('WBUser', metadata, autoload=True)  # Table Reflection 个人信息表
+    WBData = Table('WBData', metadata, autoload=True)  # 动态表
+    cookie = getcookies(cookie)
+    resinfo = gethtml(infourl, headers, cookie)  # 抓取资料页的信息
+    resmain = gethtml(mainurl, headers, cookie)  # 抓取用户主页信息
+    getinfo(resinfo, uid, WBUser, conn)
+    getmain(resmain, uid, WBData, conn, mainurl, headers, cookie)
     conn.close()
+
+
+
+if __name__ == '__main__':
+    main()
