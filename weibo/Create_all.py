@@ -22,8 +22,7 @@ def main():
     conf = loadconf_db(os.path.abspath('conf.yaml'))  # 获取配置文件的内容
     db = conf.get('db')
 
-    conn = pymysql.connect(host='localhost', user=db['user'], passwd=db['password'], db='mysql', charset='utf8mb4',
-                           port=3306)  # 默认为127.0.0.1本地主机
+    conn = pymysql.connect(host='localhost', user=db['user'], passwd=db['password'], db='mysql', charset='utf8mb4',port=3306)  # 默认为127.0.0.1本地主机
     cur = conn.cursor()
     cur.execute("Create database weibo")
     cur.close()

@@ -39,12 +39,18 @@ def getcookies(cookie):
 #抓取html
 def gethtml(url,headers,cookie):
     print(url)
-    r = requests.get(url, headers=headers,cookies=cookie,timeout=2)
-    time.sleep(random.random()+0.5)#随机延迟0.5~1.5秒
-    if r.status_code != 200:
-        raise Exception('界面获取失败')
-    else:
-        return r
+    try:
+        r = requests.get(url, headers=headers,cookies=cookie,timeout=10)
+        time.sleep(random.random()+0.5)#随机延迟0.5~1.5秒
+        if r.status_code != 200:
+            raise Exception('界面获取失败')
+        else:
+            return r
+    except Exception:
+        pass
+    #如果抓取超时则抓取baidu404界面，r会是空的
+    r = requests.get('https://www.baidu.com/search/error.html',headers=headers)
+    return r
 
 #获取个人资料并导入mysql
 def getinfo(r,uid,table,conn):
@@ -122,6 +128,7 @@ def getmain(res,uid,table,conn,url,headers,cookie):
     re_nbsp = re.compile(r'&nbsp',re.S) #去除$nbsp
     re_html = re.compile(r'</?\w+[^>]*>',re.S) #去除html标签
     re_200b = re.compile(r'\u200b',re.S) #去除分隔符
+    re_quot = re.compile(r'&quot',re.S)
     dys = re.findall(dynamic,res.text)
     ts = re.findall(times,res.text)
     pages = re.findall(page_number,res.text)
@@ -139,9 +146,10 @@ def getmain(res,uid,table,conn,url,headers,cookie):
     print(len(dys))
     print(len(ts))
     for i in range(len(ts)):
-        dys[i] = re_nbsp.sub('',dys[i])
+        dys[i] = re_nbsp.sub('', dys[i])
         dys[i] = re_html.sub('', dys[i])
         dys[i] = re_200b.sub('', dys[i])
+        dys[i] = re_quot.sub('', dys[i])
         ins = insert(table).values(uid=uid,weibo_cont=pymysql.escape_string(dys[i]),create_time=ts[i])
         ins = ins.on_duplicate_key_update(weibo_cont=pymysql.escape_string(dys[i]))
         conn.execute(ins)
@@ -163,24 +171,23 @@ def main():
         'User_Agent': random.choice(user_agents)
     }
     cookie = random.choice(cookies)
-    uid = random.choice(uids)
-    # 这个入口仍然有效
-    login_url = 'https://m.weibo.cn/u/'
-    infourl = 'https://weibo.cn/' + str(uid) + '/info'
-    mainurl = 'https://weibo.cn/' + str(uid)
+    cookie = getcookies(cookie)
 
     connect_str = 'mysql+pymysql://' + db['user'] + ':' + db['password'] + '@127.0.0.1:3306/weibo?charset=utf8mb4'
     engine = create_engine(connect_str, encoding='utf-8')
     conn = engine.connect()
     metadata = MetaData(engine)
-
     WBUser = Table('WBUser', metadata, autoload=True)  # Table Reflection 个人信息表
     WBData = Table('WBData', metadata, autoload=True)  # 动态表
-    cookie = getcookies(cookie)
-    resinfo = gethtml(infourl, headers, cookie)  # 抓取资料页的信息
-    resmain = gethtml(mainurl, headers, cookie)  # 抓取用户主页信息
-    getinfo(resinfo, uid, WBUser, conn)
-    getmain(resmain, uid, WBData, conn, mainurl, headers, cookie)
+
+    for uid in uids:
+        infourl = 'https://weibo.cn/' + str(uid) + '/info'#资料页面
+        mainurl = 'https://weibo.cn/' + str(uid)#动态页面
+        resinfo = gethtml(infourl, headers, cookie)  # 抓取资料页的信息
+        resmain = gethtml(mainurl, headers, cookie)  # 抓取用户主页信息
+        getinfo(resinfo, uid, WBUser, conn)
+        getmain(resmain, uid, WBData, conn, mainurl, headers, cookie)
+
     conn.close()
 
 

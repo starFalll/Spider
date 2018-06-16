@@ -56,12 +56,12 @@ def word_segmentation(content, stop_words):
     return word_list
 
 #将数据库中的微博动态转化为字符串
-def getstr():
+def getstr(uid=1845675654):
     engine = Connect('../conf.yaml')  # 连接数据库
     conn = engine.connect()
     metadata = MetaData(engine)
     WBData = Table('WBData', metadata, autoload=True)
-    s = select([WBData])
+    s = select([WBData]).where(WBData.c.uid==uid)
     res = conn.execute(s)
     conn.close()
     str = ''
@@ -94,7 +94,7 @@ def plot_chart(counter, chart_type='Bar'):
     chart.render()
 
 def main():
-    str=getstr()#将数据库中的微博动态转化为字符串
+    str=getstr(1845675654)#将数据库中的微博动态转化为字符串,可以指定uid(conf.yaml里面的)
     with open('data/stop_words.txt') as f:
         stop_words = f.read().split('\n')
     str=format_content(str)
