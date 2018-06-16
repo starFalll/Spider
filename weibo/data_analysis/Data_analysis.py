@@ -1,5 +1,5 @@
 """
-@auther:ACool(www.github.com/starFalll)
+@author:ACool(www.github.com/starFalll)
 根据微博用户动态进行词云和词频分析
 """
 import jieba

@@ -1,5 +1,5 @@
 """
-@auther:ACool(www.github.com/starFalll)
+@author:ACool(www.github.com/starFalll)
 爬取微博用户资料和动态并保存在数据库中
 """
 

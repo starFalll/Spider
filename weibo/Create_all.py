@@ -1,5 +1,5 @@
 """
-@auther:ACool(www.github.com/starFalll)
+@author:ACool(www.github.com/starFalll)
 创建数据库
 """
 from sqlalchemy import create_engine, MetaData,Table, Column, Integer, String, ForeignKey,TEXT

@@ -1,5 +1,5 @@
 """
-@auther:ACool(www.github.com/starFalll)
+@author:ACool(www.github.com/starFalll)
 隐含狄利克雷分布（英语：Latent Dirichlet allocation，简称LDA）
 一种主题模型，它可以将文档集中每篇文档的主题按照概率分布的形式给出。同时它是一种无监督学习算法，
 在训练时不需要手工标注的训练集，需要的仅仅是文档集以及指定主题的数量k即可。此外LDA的另一个优点则是，

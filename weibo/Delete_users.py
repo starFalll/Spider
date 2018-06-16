@@ -1,5 +1,5 @@
 """
-@auther:ACool(www.github.com/starFalll)
+@author:ACool(www.github.com/starFalll)
 删除不在conf.yaml配置文件中的微博用户及其动态
 """
 from weibo.Connect_mysql import Connect
