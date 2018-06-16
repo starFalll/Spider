@@ -7,7 +7,19 @@
 
 环境：python3
 
-安装依赖 `pip3 install -r requirements.txt`
+推荐使用虚拟环境：
+
+```
+cd weibo
+chmod u+x env.sh
+./env.sh
+```
+
+全局安装（不使用虚拟环境）：
+
+ `pip3 install -r requirements.txt`
+
+
 
 具体说明请见源码。
 
@@ -20,7 +32,7 @@
 
 -  生成词云
 - 统计词频
-- 使用 LDA 构建了**微博动态主题模型**
+- 使用 LDA 构建了**微博主题模型**
 - 更多功能...
 
 *UI:*
@@ -29,3 +41,4 @@
   ​
   *更多功能还在开发中，程序也在不断重构中....*
   *代码行数++*
+
