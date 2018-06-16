@@ -1,12 +1,13 @@
+#爬取微博用户资料和动态并保存在数据库中
+
 import requests
 import random
 import re
 import pymysql
 from sqlalchemy import create_engine, MetaData,Table, Column, Integer, String, ForeignKey,update
 from sqlalchemy.dialects.mysql import insert
-from yaml import load
-import os
 import time
+from weibo.Connect_mysql import Connect
 """
 手动创建数据库的SQL语句（非必须，如果Create_all.py运行没问题则不用手动创建）
 CREATE DATABASE weibo;
@@ -112,12 +113,6 @@ def getinfo(r,uid,table,conn):
     conn.execute(ins)
 
 
-#加载配置
-def loadconf_db(file_path):
-    with open(file_path,'r',encoding='utf-8') as f:
-            cont=f.read()
-            cf=load(cont)
-            return cf
 
 
 #获取个人动态信息并导入mysql
@@ -156,8 +151,7 @@ def getmain(res,uid,table,conn,url,headers,cookie):
 
 
 def main():
-    conf = loadconf_db(os.path.abspath('conf.yaml'))  # 获取配置文件的内容
-    db = conf.get('db')
+    conf,engine = Connect('conf.yaml')   # 获取配置文件的内容
     uids = conf.get('uids')
     cookies = conf.get('cookies')
     user_agents = conf.get('user_agents')
@@ -173,8 +167,7 @@ def main():
     cookie = random.choice(cookies)
     cookie = getcookies(cookie)
 
-    connect_str = 'mysql+pymysql://' + db['user'] + ':' + db['password'] + '@127.0.0.1:3306/weibo?charset=utf8mb4'
-    engine = create_engine(connect_str, encoding='utf-8')
+
     conn = engine.connect()
     metadata = MetaData(engine)
     WBUser = Table('WBUser', metadata, autoload=True)  # Table Reflection 个人信息表

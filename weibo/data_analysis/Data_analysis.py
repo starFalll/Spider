@@ -1,3 +1,4 @@
+#根据微博用户动态进行词云和词频分析
 import jieba
 from wordcloud import WordCloud
 from sqlalchemy import create_engine, MetaData,Table, Column, Integer, String, ForeignKey,update,select
@@ -57,7 +58,7 @@ def word_segmentation(content, stop_words):
 
 #将数据库中的微博动态转化为字符串
 def getstr(uid=1845675654):
-    engine = Connect('../conf.yaml')  # 连接数据库
+    _,engine = Connect('../conf.yaml')  # 连接数据库
     conn = engine.connect()
     metadata = MetaData(engine)
     WBData = Table('WBData', metadata, autoload=True)

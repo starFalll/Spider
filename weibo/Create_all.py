@@ -1,10 +1,13 @@
+#创建数据库
 from sqlalchemy import create_engine, MetaData,Table, Column, Integer, String, ForeignKey,TEXT
 import os
 import pymysql
 
-from weibo.sina_spider import loadconf_db
+from weibo.Connect_mysql import loadconf_db
+
+
 """
-创建数据库
+
 Why use utf8mb4 ,not utf8
 However, for MySQL versions 5.5.3 on forward, a new MySQL-specific encoding 'utf8mb4' has been introduced. 
 The rationale for this new encoding is due to the fact that MySQL’s utf-8 encoding 
@@ -28,9 +31,11 @@ def main():
     cur.close()
     conn.close()
 
-    connect_str = 'mysql+pymysql://' + db['user'] + ':' + db['password'] + '@127.0.0.1:3306/weibo?charset=utf8mb4'
+    connect_str = 'mysql+pymysql://' + str(db['user']) + ':' + str(db['password']) + '@127.0.0.1:3306/weibo?charset=utf8mb4'
     engine = create_engine(connect_str, encoding='utf-8')
     metadata = MetaData()
+
+    #微博用户信息表
     WBUser = Table('WBUser', metadata,
                    Column('userID', Integer, primary_key=True, autoincrement=True),  # 主键，自动添加
                    Column("uid", String(20), unique=True, nullable=False),  # 微博用户的uid
@@ -45,6 +50,7 @@ def main():
                    Column("Description", String(2500), default='', server_default=''),  # 简介
                    mysql_charset='utf8mb4'
                    )
+    #微博用户动态表
     WBData = Table('WBData', metadata,
                    Column('dataID', Integer, primary_key=True, autoincrement=True),  # 主键，自动添加
                    Column('uid', String(20), ForeignKey(WBUser.c.uid), nullable=False),  # 外键

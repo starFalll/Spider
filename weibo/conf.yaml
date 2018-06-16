@@ -1,4 +1,3 @@
-#change your mysql user and password
 db:
     host: 127.0.0.1
     port: 3306
@@ -6,13 +5,11 @@ db:
     password: password
     db_name: weibo
     db_type: mysql
-
-#please add your uid
 uids:
     1: 6073302163
     2: 1845675654
+    3: 1497642751
 
-#please add your account cookies(small count,not big count,becaues may be banned)
 cookies:
     1: _T_WM=17ddf36185fa05928df85390206cc99e; MLOGIN=0; M_WEIBOCN_PARAMS=uicode%3D10000011%26fid%3D102803; SUB=_2A252Jm93DeRhGeBK7lAV8yfIyzyIHXVV6XE_rDV6PUJbkdBeLVfVkW1NR7ex31922SwVAsr-r8BtHMH-tjyP5bYE; SUHB=079j4ILhM97JcL; SCF=Ai5UyFtcjzJlxDyblLOeU87DbFXQsoI_q8c_61YX8Q7XQY5dGTS4tzUsiYHhR6sJ_eeVuzSj6ve8Tcmz1QU1EOc.; SSOLoginState=1528962855
     2: _T_WM=17ddf36185fa05928df85390206cc99e; SUB=_2A252Jm93DeRhGeBK7lAV8yfIyzyIHXVV6XE_rDV6PUJbkdBeLVfVkW1NR7ex31922SwVAsr-r8BtHMH-tjyP5bYE; SUHB=079j4ILhM97JcL; SCF=Ai5UyFtcjzJlxDyblLOeU87DbFXQsoI_q8c_61YX8Q7XQY5dGTS4tzUsiYHhR6sJ_eeVuzSj6ve8Tcmz1QU1EOc.; SSOLoginState=1529033043; ALF=1531625043
