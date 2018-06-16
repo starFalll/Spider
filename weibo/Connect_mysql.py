@@ -1,4 +1,7 @@
-#连接数据库
+"""
+@auther:ACool(www.github.com/starFalll)
+连接数据库
+"""
 from sqlalchemy import create_engine
 from yaml import load
 

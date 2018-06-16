@@ -1,4 +1,7 @@
-#根据微博用户动态进行词云和词频分析
+"""
+@auther:ACool(www.github.com/starFalll)
+根据微博用户动态进行词云和词频分析
+"""
 import jieba
 from wordcloud import WordCloud
 from sqlalchemy import create_engine, MetaData,Table, Column, Integer, String, ForeignKey,update,select
@@ -95,13 +98,14 @@ def plot_chart(counter, chart_type='Bar'):
     chart.render()
 
 def main():
-    str=getstr(1845675654)#将数据库中的微博动态转化为字符串,可以指定uid(conf.yaml里面的)
+    str=getstr(1497642751)#将数据库中的微博动态转化为字符串,可以指定uid(conf.yaml里面的)
     with open('data/stop_words.txt') as f:
         stop_words = f.read().split('\n')
     str=format_content(str)
     word_list=word_segmentation(str,stop_words)#分词并去除停用词
     create_wordcloud(word_list) #画出词云
     counter = word_frequency(word_list, 10)# 返回前 top_N 个值，如果不指定则返回所有值
+    print(counter)
     plot_chart(counter)#会生成词频图保存在render.html中
 
 

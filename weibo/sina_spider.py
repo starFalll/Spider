@@ -1,4 +1,7 @@
-#爬取微博用户资料和动态并保存在数据库中
+"""
+@auther:ACool(www.github.com/starFalll)
+爬取微博用户资料和动态并保存在数据库中
+"""
 
 import requests
 import random
@@ -77,20 +80,21 @@ def getinfo(r,uid,table,conn):
         if(titleone[0]=='基本信息'):
             for inf in infos:
                 if(inf.startswith('昵称')):
-                    _,Uname=inf.split(':')
+                    _,Uname=inf.split(':',1)
                 elif(inf.startswith('认证信息')):
                     print(inf)
-                    _,Certified=inf.split('：')
+                    _,Certified=inf.split('：',1)
                 elif(inf.startswith('性别')):
-                    _,Sex=inf.split(':')
+                    _,Sex=inf.split(':',1)
                 elif(inf.startswith('感情状况')):
-                    _,Relationship=inf.split(':')
+                    _,Relationship=inf.split(':',1)
                 elif(inf.startswith('地区')):
-                    _,Area=inf.split(':')
+                    _,Area=inf.split(':',1)
                 elif(inf.startswith('生日')):
-                    _,Birthday=inf.split(':')
+                    _,Birthday=inf.split(':',1)
                 elif(inf.startswith('简介')):
-                    _,Description=inf.split(':')
+                    print(inf.split(':'))
+                    _,Description=inf.split(':',1)
                 else:
                     pass
         elif(titleone[0]=='学习经历'):

@@ -1,4 +1,7 @@
-#创建数据库
+"""
+@auther:ACool(www.github.com/starFalll)
+创建数据库
+"""
 from sqlalchemy import create_engine, MetaData,Table, Column, Integer, String, ForeignKey,TEXT
 import os
 import pymysql
@@ -50,14 +53,24 @@ def main():
                    Column("Description", String(2500), default='', server_default=''),  # 简介
                    mysql_charset='utf8mb4'
                    )
+
     #微博用户动态表
     WBData = Table('WBData', metadata,
                    Column('dataID', Integer, primary_key=True, autoincrement=True),  # 主键，自动添加
                    Column('uid', String(20), ForeignKey(WBUser.c.uid), nullable=False),  # 外键
                    Column('weibo_cont', TEXT, default=''),  # 微博内容
-                   Column('create_time', String(200), unique=True),  # 创建时间
+                   Column('create_time', String(200), unique=True),  # 创建时间,unique用来执行upsert操作，判断冲突
                    mysql_charset='utf8mb4'
                    )
+
+    #动态主题表
+    WBTopic = Table('WBTopic',metadata,
+                    Column('topicID',Integer,primary_key=True, autoincrement=True),  # 主键，自动添加
+                    Column('uid',String(20), ForeignKey(WBUser.c.uid), nullable=False),  # 外键
+                    Column('topic',Integer,nullable=False),#主题-----默认5类
+                    Column('topic_cont',String(20),nullable=False,unique=True),#主题内容
+                    mysql_charset='utf8mb4'
+    )
 
     metadata.create_all(engine)
 
