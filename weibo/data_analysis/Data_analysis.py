@@ -97,8 +97,8 @@ def plot_chart(counter, chart_type='Bar'):
 
     chart.render()
 
-def main():
-    str=getstr(1497642751)#将数据库中的微博动态转化为字符串,可以指定uid(conf.yaml里面的)
+def main(uid=1497642751):
+    str=getstr(uid)#将数据库中的微博动态转化为字符串,可以指定uid(conf.yaml里面的)
     with open('data/stop_words.txt') as f:
         stop_words = f.read().split('\n')
     str=format_content(str)

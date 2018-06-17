@@ -72,8 +72,12 @@ def pyLDAvisUI(lda,tf,tf_vectorizer):
     pyLDAvis.save_html(page, 'lda.html')        #将主题可视化数据保存为html文件
     #pyLDAvis.save_json(page,'lda.json')         #将主题可视化数据保存为json文件
 
-if __name__ == '__main__':
-    wordlists,uid=getwords()
-    lda, tf, tf_feature_names, tf_vectorizer=word2vec(wordlists)
+
+def main(uid=1497642751):
+    wordlists, uid = getwords(uid)
+    lda, tf, tf_feature_names, tf_vectorizer = word2vec(wordlists)
     Save_Topic_Words(lda, tf_feature_names, uid)
-    pyLDAvisUI(lda,tf,tf_vectorizer)
+    pyLDAvisUI(lda, tf, tf_vectorizer)
+
+if __name__ == '__main__':
+    main()
