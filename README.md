@@ -67,3 +67,21 @@ chmod u+x env.sh
         ├── __init__.py
         ├── requirements.txt		#项目依赖文件
         └── sina_spider.py			#爬取微博用户资料和动态并保存在数据库中
+## 数据分析示例
+
+词云：
+
+![weibo.jpg](https://i.loli.net/2018/06/17/5b26361426b82.jpg)
+
+词频分析：
+
+![weibo_wordfrq.gif](https://i.loli.net/2018/06/17/5b26361503806.gif)
+
+微博动态时间统计：
+
+![weibo_dynamic.gif](https://i.loli.net/2018/06/17/5b26361747a64.gif)
+
+微博主题分析（LDA）：
+
+![lda.gif](https://i.loli.net/2018/06/17/5b263614bb666.gif)
+

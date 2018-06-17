@@ -8,7 +8,7 @@
 本程序使用LDA进行微博动态主题建模与分析。
 
 """
-from weibo.data_analysis.Data_analysis import getstr, format_content,word_segmentation
+from weibo.data_analysis.Data_analysis import get_time_str, format_content,word_segmentation
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 from weibo.Connect_mysql import Connect
@@ -20,7 +20,7 @@ import pyLDAvis.sklearn
 
 #获取微博动态数据
 def getwords(uid=1497642751):
-    str = getstr(uid)  # 将数据库中的微博动态转化为字符串,可以指定uid(conf.yaml里面的)
+    _,str = get_time_str(uid)  # 将数据库中的微博动态转化为字符串,可以指定uid(conf.yaml里面的)
     with open('data/stop_words.txt') as f:
         stop_words = f.read().split('\n')
     str = format_content(str)
