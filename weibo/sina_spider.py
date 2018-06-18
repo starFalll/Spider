@@ -15,8 +15,8 @@ from weibo.Connect_mysql import Connect
 手动创建数据库的SQL语句（非必须，如果Create_all.py运行没问题则不用手动创建）
 CREATE DATABASE weibo;
 USE weibo;
-CREATE TABLE WBUser
-(userID int PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE wb_user
+(user_ID int PRIMARY KEY AUTO_INCREMENT,
  uid    varchar(20) NOT NULL,
  Uname varchar(50) NOT NULL ,
  Certified VARCHAR(50) NULL ,
@@ -41,17 +41,29 @@ def getcookies(cookie):
     return cookies
 
 #抓取html
-def gethtml(url,headers,cookie):
+def gethtml(url,headers,cookie,conf,use_proxies=False):
     print(url)
     try:
-        r = requests.get(url, headers=headers,cookies=cookie,timeout=10)
-        time.sleep(random.random()+0.5)#随机延迟0.5~1.5秒
-        if r.status_code != 200:
-            raise Exception('界面获取失败')
+        if(use_proxies==True):#使用代理
+            proxy = conf.get('IP')
+            proxy = list(proxy.values())
+            ip = random.choice(proxy)
+            proxies = {"http": "http://"+str(ip), }
+            r = requests.get(url, headers=headers,cookies=cookie,timeout=10,proxies=proxies)
+            time.sleep(random.random()+0.5)#随机延迟0.5~1.5秒
+            if r.status_code != 200:
+                raise Exception('界面获取失败:return '+str(r.status_code))
+            else:
+                return r
         else:
-            return r
-    except Exception:
-        pass
+            r = requests.get(url, headers=headers, cookies=cookie, timeout=10)
+            time.sleep(random.random() + 0.5)  # 随机延迟0.5~1.5秒
+            if r.status_code != 200:
+                raise Exception('界面获取失败')
+            else:
+                return r
+    except Exception as e:
+        print(e)
     #如果抓取超时则抓取baidu404界面，r会是空的
     r = requests.get('https://www.baidu.com/search/error.html',headers=headers)
     return r
@@ -120,7 +132,7 @@ def getinfo(r,uid,table,conn):
 
 
 #获取个人动态信息并导入mysql
-def getmain(res,uid,table,conn,url,headers,cookie):
+def getmain(res,uid,table,conn,url,user_agents, cookies,conf,use_proxies=False):
     dynamic = re.compile(r'.*?><span class="ctt">(.*?)<a href', re.S)#匹配动态
     times = re.compile(r'.*?<span class="ct">(.*?)&nbsp',re.S)#匹配动态发布时间
     page_number = re.compile(r'.*/(\d*?)页</div>',re.S)#匹配动态页数
@@ -136,9 +148,15 @@ def getmain(res,uid,table,conn,url,headers,cookie):
 
     mainurl=url;
     for pagenum in range(int(pagenums))[1:]:
+        # 随机选择，防止被ban
+        cookie = random.choice(cookies)
+        cookie = getcookies(cookie)
+        headers = {
+            'User_Agent': random.choice(user_agents)
+        }
         pagenum+=1
         url=mainurl+'?page='+str(pagenum)
-        page=gethtml(url,headers,cookie)
+        page=gethtml(url,headers,cookie,conf,use_proxies)
         dys += re.findall(dynamic,page.text)
         ts += re.findall(times,page.text)
     dys = dys[1:]
@@ -153,8 +171,8 @@ def getmain(res,uid,table,conn,url,headers,cookie):
         ins = ins.on_duplicate_key_update(weibo_cont=pymysql.escape_string(dys[i]))
         conn.execute(ins)
 
-
-def main():
+#默认不使用代理ip
+def main(use_proxies=False):
     conf,engine = Connect('conf.yaml')   # 获取配置文件的内容
     uids = conf.get('uids')
     cookies = conf.get('cookies')
@@ -163,31 +181,29 @@ def main():
     cookies = list(cookies.values())
     user_agents = list(user_agents.values())
 
-    # 随机选择，防止被ban
-
-    headers = {
-        'User_Agent': random.choice(user_agents)
-    }
-    cookie = random.choice(cookies)
-    cookie = getcookies(cookie)
-
 
     conn = engine.connect()
     metadata = MetaData(engine)
-    WBUser = Table('WBUser', metadata, autoload=True)  # Table Reflection 个人信息表
-    WBData = Table('WBData', metadata, autoload=True)  # 动态表
+    wb_user = Table('wb_user', metadata, autoload=True)  # Table Reflection 个人信息表
+    wb_data = Table('wb_data', metadata, autoload=True)  # 动态表
 
     for uid in uids:
+        # 随机选择，防止被ban
+        cookie = random.choice(cookies)
+        cookie = getcookies(cookie)
+        headers = {
+            'User_Agent': random.choice(user_agents)
+        }
         infourl = 'https://weibo.cn/' + str(uid) + '/info'#资料页面
         mainurl = 'https://weibo.cn/' + str(uid)#动态页面
-        resinfo = gethtml(infourl, headers, cookie)  # 抓取资料页的信息
-        resmain = gethtml(mainurl, headers, cookie)  # 抓取用户主页信息
-        getinfo(resinfo, uid, WBUser, conn)
-        getmain(resmain, uid, WBData, conn, mainurl, headers, cookie)
+        resinfo = gethtml(infourl, headers, cookie,conf,use_proxies)  # 抓取资料页的信息
+        resmain = gethtml(mainurl, headers, cookie,conf,use_proxies)  # 抓取用户主页信息
+        getinfo(resinfo, uid, wb_user, conn)
+        getmain(resmain, uid, wb_data, conn, mainurl, user_agents, cookies,conf,use_proxies)
 
     conn.close()
 
 
 
 if __name__ == '__main__':
-    main()
+    main(use_proxies=False)#默认不使用代理ip

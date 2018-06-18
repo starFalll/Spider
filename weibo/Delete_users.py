@@ -9,9 +9,9 @@ def DeleteUsers():
     conf,engine = Connect('conf.yaml')
     conn = engine.connect()
     metadata = MetaData(engine)
-    WBData = Table('WBData', metadata, autoload=True)
-    WBUser = Table('WBUser', metadata, autoload=True)
-    empty = select([WBUser.c.uid])
+    wb_data = Table('wb_data', metadata, autoload=True)
+    wb_user = Table('wb_user', metadata, autoload=True)
+    empty = select([wb_user.c.uid])
     res = conn.execute(empty)#得到WBUser表中所有的uid
     deluid = []                #要删除的uid
     uids = conf.get('uids')
@@ -20,9 +20,9 @@ def DeleteUsers():
         if(int(r[0]) not in uids):
             deluid.append(r[0])
     for uid in deluid:
-        exc = WBData.delete().where(WBUser.c.uid==str(uid)) #删除用户动态信息
+        exc = wb_data.delete().where(wb_user.c.uid==str(uid)) #删除用户动态信息
         conn.execute(exc)
-        exc = WBUser.delete().where(WBUser.c.uid==str(uid))#删除用户个人信息
+        exc = wb_user.delete().where(wb_user.c.uid==str(uid))#删除用户个人信息
         conn.execute(exc)
 
 

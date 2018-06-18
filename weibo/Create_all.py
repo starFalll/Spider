@@ -28,7 +28,7 @@ def main():
     conf = loadconf_db(os.path.abspath('conf.yaml'))  # 获取配置文件的内容
     db = conf.get('db')
 
-    conn = pymysql.connect(host=db['host'], user=db['user'], passwd=db['password'], db=db['db_type'], charset='utf8mb4',port=3306)  # 默认为127.0.0.1本地主机
+    conn = pymysql.connect(host=str(db['host']), user=str(db['user']), passwd=str(db['password']), db=str(db['db_type']), charset='utf8mb4',port=3306)  # 默认为127.0.0.1本地主机
     cur = conn.cursor()
     cur.execute("Create database weibo")
     cur.close()
@@ -40,8 +40,8 @@ def main():
     metadata = MetaData()
 
     #微博用户信息表
-    WBUser = Table('WBUser', metadata,
-                   Column('userID', Integer, primary_key=True, autoincrement=True),  # 主键，自动添加
+    wb_user = Table('wb_user', metadata,
+                   Column('user_ID', Integer, primary_key=True, autoincrement=True),  # 主键，自动添加
                    Column("uid", String(20), unique=True, nullable=False),  # 微博用户的uid
                    Column("Uname", String(50), nullable=False),  # 昵称
                    Column("Certified", String(50), default='', server_default=''),  # 认证信息
@@ -56,18 +56,18 @@ def main():
                    )
 
     #微博用户动态表
-    WBData = Table('WBData', metadata,
-                   Column('dataID', Integer, primary_key=True, autoincrement=True),  # 主键，自动添加
-                   Column('uid', String(20), ForeignKey(WBUser.c.uid), nullable=False),  # 外键
+    wb_data = Table('wb_data', metadata,
+                   Column('data_ID', Integer, primary_key=True, autoincrement=True),  # 主键，自动添加
+                   Column('uid', String(20), ForeignKey(wb_user.c.uid), nullable=False),  # 外键
                    Column('weibo_cont', TEXT, default=''),  # 微博内容
                    Column('create_time', String(200), unique=True),  # 创建时间,unique用来执行upsert操作，判断冲突
                    mysql_charset='utf8mb4'
                    )
 
     #动态主题表
-    WBTopic = Table('WBTopic',metadata,
-                    Column('topicID',Integer,primary_key=True, autoincrement=True),  # 主键，自动添加
-                    Column('uid',String(20), ForeignKey(WBUser.c.uid), nullable=False),  # 外键
+    wb_topic = Table('wb_topic',metadata,
+                    Column('topic_ID',Integer,primary_key=True, autoincrement=True),  # 主键，自动添加
+                    Column('uid',String(20), ForeignKey(wb_user.c.uid), nullable=False),  # 外键
                     Column('topic',Integer,nullable=False),#主题-----默认5类
                     Column('topic_cont',String(20),nullable=False,unique=True),#主题内容
                     mysql_charset='utf8mb4'

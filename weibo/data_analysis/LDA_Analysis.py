@@ -19,7 +19,7 @@ import pyLDAvis.sklearn
 
 
 #获取微博动态数据
-def getwords(uid=1497642751):
+def getwords(uid):
     _,str = get_time_str(uid)  # 将数据库中的微博动态转化为字符串,可以指定uid(conf.yaml里面的)
     with open('data/stop_words.txt') as f:
         stop_words = f.read().split('\n')
@@ -32,13 +32,15 @@ def Save_Topic_Words(model,feature_names, uid,n_top_words=20):
     _,engine=Connect('../conf.yaml')
     conn = engine.connect()
     metadata = MetaData(engine)
-    WBTopic = Table('WBTopic', metadata, autoload=True)
+    wb_topic = Table('wb_topic', metadata, autoload=True)
     for topic_idx, topic in enumerate(model.components_):
         topics=topic_idx                                            #主题
         topic_conts=([feature_names[i]
                         for i in topic.argsort()[:-n_top_words - 1:-1]])#主题
+        print("Topic #%d:" % topics)
+        print(topic_conts)
         for topic_cont in topic_conts:
-            ins = insert(WBTopic).values(uid=uid,topic=topics,topic_cont=topic_cont)
+            ins = insert(wb_topic).values(uid=uid,topic=topics,topic_cont=topic_cont)
             ins = ins.on_duplicate_key_update(
                 topic=topics
             )
@@ -63,6 +65,7 @@ def word2vec(word_list,n_features=1000,topics = 5):
 
     #依次输出每个主题的关键词表
     tf_feature_names = tf_vectorizer.get_feature_names()
+
     return lda,tf,tf_feature_names,tf_vectorizer
 
 #将主题以可视化结果展现出来
@@ -73,11 +76,13 @@ def pyLDAvisUI(lda,tf,tf_vectorizer):
     #pyLDAvis.save_json(page,'lda.json')         #将主题可视化数据保存为json文件
 
 
-def main(uid=1497642751):
+def main(uid):
     wordlists, uid = getwords(uid)
     lda, tf, tf_feature_names, tf_vectorizer = word2vec(wordlists)
     Save_Topic_Words(lda, tf_feature_names, uid)
     pyLDAvisUI(lda, tf, tf_vectorizer)
 
 if __name__ == '__main__':
-    main()
+    conf, _ = Connect('../conf.yaml')
+    uid = conf.get('uid')['1']
+    main(uid)  # 指定需要分析的用户的uid（必须先存在conf.yaml里面，并且运行了一次sina_spider程序），默认为conf.yaml中的第一条uid
