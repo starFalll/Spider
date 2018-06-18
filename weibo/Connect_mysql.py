@@ -15,6 +15,7 @@ def loadconf_db(file_path):
 def Connect(file):
     conf = loadconf_db(file)
     db = conf.get('db')
-    connect_str = 'mysql+pymysql://' + str(db['user']) + ':' + str(db['password']) + '@127.0.0.1:3306/weibo?charset=utf8mb4'
+    connect_str = str(db['db_type'])+'+pymysql://' + str(db['user']) + ':' + str(db['password']) + \
+                  '@'+str(db['host'])+':'+str(db['port'])+'/'+str(db['db_name'])+'?charset=utf8mb4'
     engine = create_engine(connect_str, encoding='utf-8')
     return conf,engine

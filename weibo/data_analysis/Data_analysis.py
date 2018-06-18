@@ -1,6 +1,6 @@
 """
 @author:ACool(www.github.com/starFalll)
-根据微博用户动态进行词云和词频分析
+根据微博用户动态进行词云,词频分析,和时间分析
 """
 import jieba
 from wordcloud import WordCloud
