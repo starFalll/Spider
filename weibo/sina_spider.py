@@ -146,8 +146,12 @@ def getmain(res,uid,table,conn,url,user_agents, cookies,conf,use_proxies=False):
     pagenums=pages[0]
     print(pagenums)
 
-    mainurl=url;
+    mainurl=url
+    label = 0 #标签用于计数，每十次延时10S
     for pagenum in range(int(pagenums))[1:]:
+        if(label ==10 ):
+            time.sleep(10)
+            label = 0
         # 随机选择，防止被ban
         cookie = random.choice(cookies)
         cookie = getcookies(cookie)
@@ -155,6 +159,7 @@ def getmain(res,uid,table,conn,url,user_agents, cookies,conf,use_proxies=False):
             'User_Agent': random.choice(user_agents)
         }
         pagenum+=1
+        label += 1
         url=mainurl+'?page='+str(pagenum)
         page=gethtml(url,headers,cookie,conf,use_proxies)
         dys += re.findall(dynamic,page.text)
