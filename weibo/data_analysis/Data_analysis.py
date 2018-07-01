@@ -10,7 +10,8 @@ from collections import Counter
 from pyecharts import Bar, Pie
 from weibo.Connect_mysql import Connect
 import json
-
+from io import BytesIO
+import base64
 
 #去掉表情和一些不必要的符号
 def format_content(content):
@@ -34,7 +35,12 @@ def create_wordcloud(content,image='weibo.jpg',max_words=5000,max_font_size=50):
         max_font_size=max_font_size
     )
     word_cloud = cloud.generate(cut_text)
-    word_cloud.to_file(image)
+    #word_cloud.to_file(image)
+    images=word_cloud.to_image()
+    buffered = BytesIO()
+    images.save(buffered, format="JPEG")
+    img_str = base64.b64encode(buffered.getvalue())
+    return img_str
 
 #分词并去除停用词
 def word_segmentation(content, stop_words):
@@ -138,9 +144,10 @@ def plot_create_time(time_lists):
 
 def py2json(time_list,time_nums,image,words,values):
     python2json={}
+    image=str(image).replace("b'",'').replace("'",'')
     python2json['time_list']=time_list
     python2json['time_nums']=time_nums
-    python2json['image']=image
+    python2json['image']=str(image)
     python2json['words']=words
     python2json['values']=values
     json_str = json.dumps(python2json)
@@ -155,11 +162,11 @@ def main(uid):
         stop_words = f.read().split('\n')
     str=format_content(str)
     word_list=word_segmentation(str,stop_words)#分词并去除停用词
-    create_wordcloud(word_list) #画出词云
+    imagebase64=create_wordcloud(word_list) #画出词云
     counter = word_frequency(word_list, 10)# 返回前 top_N 个值，如果不指定则返回所有值
     print(counter)
     words,values=plot_chart(counter)#会生成词频图保存在render.html中
-    py2json(time_list,time_nums,word_list,words,values)
+    py2json(time_list,time_nums,imagebase64,words,values)
 
 if __name__=='__main__':
     conf, _ = Connect('../conf.yaml')
