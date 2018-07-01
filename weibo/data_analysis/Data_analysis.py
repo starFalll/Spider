@@ -9,7 +9,7 @@ import re
 from collections import Counter
 from pyecharts import Bar, Pie
 from weibo.Connect_mysql import Connect
-
+import json
 
 
 #去掉表情和一些不必要的符号
@@ -89,14 +89,15 @@ def plot_chart(counter, chart_type='Bar'):
     items = [item[0] for item in counter]
     values = [item[1] for item in counter]
 
-    if chart_type == 'Bar':
-        chart = Bar('微博动态词频统计')
-        chart.add('词频', items, values, is_more_utils=True)
-    else:
-        chart = Pie('微博动态词频统计')
-        chart.add('词频', items, values, is_label_show=True, is_more_utils=True)
-
-    chart.render('weibo_wordfrq.html')
+    # if chart_type == 'Bar':
+    #     chart = Bar('微博动态词频统计')
+    #     chart.add('词频', items, values, is_more_utils=True)
+    # else:
+    #     chart = Pie('微博动态词频统计')
+    #     chart.add('词频', items, values, is_label_show=True, is_more_utils=True)
+    #
+    # chart.render('weibo_wordfrq.html')
+    return items,values
 
 #画出微博发布时间的统计图
 def plot_create_time(time_lists):
@@ -130,14 +131,26 @@ def plot_create_time(time_lists):
     long_nums.reverse()
     time_list = long_lists + tmp_lists
     time_nums = long_nums + tmp_nums
-    chart = Bar('用户微博动态发布时间')
-    chart.add('动态数', time_list, time_nums, is_more_utils=True,datazoom_range=[10,40],is_datazoom_show=True)
-    chart.render("weibo_dynamic.html")
+    # chart = Bar('用户微博动态发布时间')
+    # chart.add('动态数', time_list, time_nums, is_more_utils=True,datazoom_range=[10,40],is_datazoom_show=True)
+    # chart.render("weibo_dynamic.html")
+    return time_list,time_nums
 
+def py2json(time_list,time_nums,image,words,values):
+    python2json={}
+    python2json['time_list']=time_list
+    python2json['time_nums']=time_nums
+    python2json['image']=image
+    python2json['words']=words
+    python2json['values']=values
+    json_str = json.dumps(python2json)
+    print("<%")
+    print(json_str)
+    print("%>")
 #可以指定需要分析的用户的uid（必须先存在conf.yaml里面，并且运行了一次sina_spider程序）
 def main(uid):
     time_lists,str=get_time_str(uid)#将数据库中的微博动态转化为字符串
-    plot_create_time(time_lists)
+    time_list,time_nums=plot_create_time(time_lists)
     with open('data/stop_words.txt') as f:
         stop_words = f.read().split('\n')
     str=format_content(str)
@@ -145,10 +158,11 @@ def main(uid):
     create_wordcloud(word_list) #画出词云
     counter = word_frequency(word_list, 10)# 返回前 top_N 个值，如果不指定则返回所有值
     print(counter)
-    plot_chart(counter)#会生成词频图保存在render.html中
-
+    words,values=plot_chart(counter)#会生成词频图保存在render.html中
+    py2json(time_list,time_nums,word_list,words,values)
 
 if __name__=='__main__':
     conf, _ = Connect('../conf.yaml')
-    uid = conf.get('uid')['1']
+    uid = conf.get('uids')
+    uid = list(uid.values())[0]
     main(uid)#指定需要分析的用户的uid（必须先存在conf.yaml里面，并且运行了一次sina_spider程序），默认为conf.yaml中的第一条uid

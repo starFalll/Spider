@@ -72,9 +72,9 @@ def word2vec(word_list,n_features=1000,topics = 5):
 def pyLDAvisUI(lda,tf,tf_vectorizer):
 
     page = pyLDAvis.sklearn.prepare(lda, tf, tf_vectorizer)
-    pyLDAvis.save_html(page, 'lda.html')        #将主题可视化数据保存为html文件
+    #pyLDAvis.save_html(page, 'lda.html')        #将主题可视化数据保存为html文件
     #pyLDAvis.save_json(page,'lda.json')         #将主题可视化数据保存为json文件
-
+    print(pyLDAvis)
 
 def main(uid):
     wordlists, uid = getwords(uid)
@@ -84,5 +84,6 @@ def main(uid):
 
 if __name__ == '__main__':
     conf, _ = Connect('../conf.yaml')
-    uid = conf.get('uid')['1']
+    uids = conf.get('uids')
+    uid=list(uids.values())[0]
     main(uid)  # 指定需要分析的用户的uid（必须先存在conf.yaml里面，并且运行了一次sina_spider程序），默认为conf.yaml中的第一条uid
