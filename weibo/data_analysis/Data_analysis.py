@@ -150,5 +150,6 @@ def main(uid):
 
 if __name__=='__main__':
     conf, _ = Connect('../conf.yaml')
-    uid = conf.get('uid')['1']
+    uid = conf.get('uids')
+    uid = list(uid.values())[0]
     main(uid)#指定需要分析的用户的uid（必须先存在conf.yaml里面，并且运行了一次sina_spider程序），默认为conf.yaml中的第一条uid

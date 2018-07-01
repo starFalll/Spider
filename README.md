@@ -12,7 +12,7 @@
 ```
 cd weibo
 chmod u+x env.sh
-./env.sh
+source env.sh
 ```
 
 全局安装（不使用虚拟环境）：
