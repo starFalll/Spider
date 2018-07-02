@@ -4,6 +4,8 @@ from weibo.Connect_mysql import Connect
 import json
 import sys
 
+
+
 def main():
     if (len(sys.argv) == 2):
         uid = sys.argv[1]
@@ -15,6 +17,7 @@ def main():
     result['first_data'] = datamain(uid)
     result['second_data'] = ldamain(uid)
     print('<%' + json.dumps(result) + '%>')
-
+    with open('~/spider/' + str(uid), 'w') as f:
+        f.write('100')
 if __name__ == '__main__':
     main()
