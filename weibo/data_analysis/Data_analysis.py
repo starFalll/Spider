@@ -145,7 +145,7 @@ def main(uid):
     create_wordcloud(word_list) #画出词云
     counter = word_frequency(word_list, 10)# 返回前 top_N 个值，如果不指定则返回所有值
     print(counter)
-    plot_chart(counter)#会生成词频图保存在render.html中
+    plot_chart(counter)#会生成词频图保存在weibo_wordfrq.html中
 
 
 if __name__=='__main__':

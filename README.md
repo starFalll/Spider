@@ -5,7 +5,13 @@
 
 ## 使用方法：
 
-环境：python3
+环境：
+
+> python 版本 \>=python3.5
+>
+> mysql 版本 \>= 5.5.3
+>
+> pip 版本应与 python 一样
 
 推荐使用虚拟环境：
 
@@ -19,7 +25,19 @@ source env.sh
 
  `pip3 install -r requirements.txt`
 
+### 代码运行流程：
 
+0.若是使用的虚拟环境，每次运行前使用 `source env.sh` 命令进入虚拟环境
+
+1.首先根据自己的情况修改 [conf.yaml](https://github.com/starFalll/Spider/blob/master/weibo/conf.yaml) ，该文件内有详细说明
+
+2.然后运行 **Create_all.py** 创建MySQL表
+
+3.接着运行 **sina_spider.py** 爬取微博用户资料和动态并保存在数据库中
+
+4.然后分别运行 **Data_analysis.py** ，**LDA_Analysis.py** 对数据进行处理
+
+5.得到数据处理结果（默认为 weibo.jpg，weibo_wordfrq.html，weibo_dynamic.html，lda.html）
 
 具体说明请见源码。
 
@@ -45,8 +63,6 @@ source env.sh
 
 
 ## 代码结构
-
-
 
     ├── baidu_result
     │   └── baidu_result.py	#根据关键词爬取百度搜索结果
