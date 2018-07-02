@@ -39,6 +39,11 @@ def Save_Topic_Words(model, feature_names, uid, n_top_words=20):
         topics = topic_idx  # 主题
         topic_conts = ([feature_names[i]
                         for i in topic.argsort()[:-n_top_words - 1:-1]])  # 主题
+        with open('/usr/share/spider/'+str(uid),'w') as f:
+            if(topics==0):
+                f.write('30')
+            else:
+                f.write(str((topics+1)*14+30))
         print("Topic #%d:" % topics)
         print(topic_conts)
         for topic_cont in topic_conts:
