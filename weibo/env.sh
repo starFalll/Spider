@@ -17,7 +17,7 @@ if [ ! -d ${VENV} ];then
 fi
 
 source ${VENV}/bin/activate
-export PYTHONPATH=${PROJ_DIR}
+export PYTHONPATH=${PROJ_DIR}/../
 export PROJ_DIR
 export PATH=${PATH}:${VENV}/bin
 pip3 install -i https://pypi.douban.com/simple/ -r requirements.txt
