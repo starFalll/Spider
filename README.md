@@ -29,7 +29,7 @@ source env.sh
 
 0.若是使用的虚拟环境，每次运行前使用 `source env.sh` 命令进入虚拟环境
 
-1.首先根据自己的情况修改 [conf.yaml](https://github.com/starFalll/Spider/blob/master/weibo/conf.yaml) ，该文件内有详细说明
+1.首先根据自己的情况修改 [conf.yaml](https://github.com/starFalll/Spider/blob/master/weibo/conf.yaml) ，该文件内有详细说明，关于 uid 和 cookie的获取请见[这篇文章](https://blogof33.com/post/11/)
 
 2.然后运行 **Create_all.py** 创建MySQL表
 
