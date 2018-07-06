@@ -8,3 +8,4 @@ scikit_learn==0.19.1
 PyYAML==3.12
 scipy==1.1.0
 pyecharts==0.5.5
+selenium==3.13.0

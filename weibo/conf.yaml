@@ -27,3 +27,11 @@ user_agents:
 IP:
     1: 219.141.153.2:80
     2: 115.150.231.108:808
+
+#This is for getting cookies
+loginname:
+    1: user
+
+
+password:
+    1: password
