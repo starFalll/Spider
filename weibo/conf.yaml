@@ -10,6 +10,7 @@ db:
 #please add your uid,there can be more than one uids
 uids:
     1: 1645171780
+    2: 1866402485
 
 
 #please add your account cookies(small count,not big count,becaues may be banned)
@@ -28,3 +29,11 @@ user_agents:
 IP:
     1: 219.141.153.2:80
     2: 115.150.231.108:808
+
+#This is for getting cookies
+loginname:
+    1: username
+
+
+password:
+    1: password
