@@ -81,9 +81,12 @@ source env.sh
         │   └── LDA_Analysis.py		#使用LDA进行微博动态主题建模与分析
         ├── Delete_users.py			#删除不在conf.yaml配置文件中的微博用户及其动态
         ├── env.sh					#该脚本可以使程序运行在虚拟环境中
+        |── get_cookies.py			#模拟登录微博并获取cookies
         ├── __init__.py
         ├── requirements.txt		#项目依赖文件
-        └── sina_spider.py			#爬取微博用户资料和动态并保存在数据库中
+        ├── sina_spider.py			#爬取微博用户资料和动态并保存在数据库中
+        └── weibo_spider.py			#爬取微博用户资料和动态并保存在数据库中(效果好)
+    
 ## 数据分析示例
 
 词云：
