@@ -23,7 +23,7 @@ def DeleteUsers():
         if (int(r[0]) not in uids):
             deluid.append(r[0])
     for uid in deluid:
-        exc = wb_data.delete().where(wb_user.c.uid == str(uid))  # 删除用户动态信息
+        exc = wb_data.delete().where(wb_data.c.uid == str(uid))  # 删除用户动态信息
         conn.execute(exc)
         exc = wb_topic.delete().where(wb_topic.c.uid == str(uid))  # 删除用户主题
         conn.execute(exc)
