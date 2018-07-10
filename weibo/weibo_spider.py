@@ -104,8 +104,7 @@ def execute_times(driver, times):
         except:
             break
     html = driver.page_source
-    with open('test.html','w') as f:
-        f.write(html)
+    
     dynamic += re.findall(d, html)
     T += re.findall(t, html)
     return dynamic, T
