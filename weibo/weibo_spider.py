@@ -100,13 +100,13 @@ def execute_times(driver):
     last_height = driver.execute_script("return document.body.scrollHeight")
 
     while True:
-        # Scroll down to bottom
+        # 滑动到底
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
-        # Wait to load page
+        # 等待加载
         time.sleep(random.random())
 
-        # Calculate new scroll height and compare with last scroll height
+        # 计算新的滚动高度并与上一个滚动高度进行比较
         new_height = driver.execute_script("return document.body.scrollHeight")
         if new_height == last_height:
             break
@@ -120,7 +120,9 @@ def execute_times(driver):
 
 
 def getmain(cookies, uid, conn, table_data, table_user):
-    driver = webdriver.Chrome()
+    opt = webdriver.ChromeOptions()  # 创建chrome参数对象
+    opt.set_headless()  # 把chrome设置成无头模式，不论windows还是linux都可以，自动适配对应参数
+    driver = webdriver.Chrome(options=opt)
     driver.get("http://weibo.com")
     time.sleep(3)
     for cookie in cookies:
@@ -134,7 +136,7 @@ def getmain(cookies, uid, conn, table_data, table_user):
     dynamics, times = execute_times(driver)
     time.sleep(2)
     driver.close()
-
+    print('end------------------------------------------')
     '''
     正则表达式组
     '''
@@ -159,6 +161,7 @@ def getmain(cookies, uid, conn, table_data, table_user):
     today = strtoday.strftime('%m月%d日')
     yesterday = stryesterday.strftime('%m月%d日')
 
+
     for i in range(len(times)):
         # 将时间中的今天(**小时前),昨天(昨天 **)和最近(month-day)这三特殊情况转化为'month月day日'格式
         istoday = re.findall(today_time, times[i])
@@ -181,7 +184,7 @@ def getmain(cookies, uid, conn, table_data, table_user):
         ins = insert(table_data).values(uid=uid, weibo_cont=pymysql.escape_string(dynamics[i]), create_time=times[i])
         ins = ins.on_duplicate_key_update(weibo_cont=pymysql.escape_string(dynamics[i]))
         conn.execute(ins)
-    print('end------------------------------------------')
+
 
 
 def main():
