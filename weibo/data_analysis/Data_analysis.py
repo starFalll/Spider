@@ -36,9 +36,8 @@ def create_wordcloud(content,image='weibo.jpg',max_words=5000,max_font_size=50):
     word_cloud = cloud.generate(cut_text)
     word_cloud.to_file(image)
 
-#分词并去除停用词
+# 分词并去除停用词
 def word_segmentation(content, stop_words):
-
     # 使用 jieba 分词对文本进行分词处理
     jieba.enable_parallel()
     seg_list = jieba.cut(content)
@@ -46,15 +45,9 @@ def word_segmentation(content, stop_words):
     seg_list = list(seg_list)
 
     # 去除停用词
-    word_list = []
-    for word in seg_list:
-        if word not in stop_words:
-            word_list.append(word)
-
-    # 过滤遗漏词、空格
     user_dict = [' ', '哒']
-    filter_space = lambda w: w not in user_dict
-    word_list = list(filter(filter_space, word_list))
+    filter_space = lambda w: w not in stop_words and w not in user_dict
+    word_list = list(filter(filter_space, seg_list))
 
     return word_list
 
