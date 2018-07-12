@@ -53,15 +53,9 @@ def word_segmentation(content, stop_words):
     seg_list = list(seg_list)
 
     # 去除停用词
-    word_list = []
-    for word in seg_list:
-        if word not in stop_words:
-            word_list.append(word)
-
-    # 过滤遗漏词、空格
     user_dict = [' ', '哒']
-    filter_space = lambda w: w not in user_dict
-    word_list = list(filter(filter_space, word_list))
+    filter_space = lambda w: w not in user_dict and stop_words
+    word_list = list(filter(filter_space, seg_list))
 
     return word_list
 
@@ -129,7 +123,6 @@ def plot_create_time(time_lists):
                 tmp_nums[-1] += 1
         else:  # res[0]20**-**-**格式的数据
             res = re.findall(long_time, t)
-
             if (not long_lists or res[0] != long_lists[-1]):
                 long_lists.append(res[0])
                 long_nums.append(1)
