@@ -91,20 +91,29 @@ def getinfo(conn, driver, uid, table):
     conn.execute(ins)
 
 
-def execute_times(driver, times):
+def execute_times(driver):
     dynamic = []
     T = []
     d = re.compile(r'og"><div class="weibo-text">(.*?)<', re.S)  # 匹配动态
     t = re.compile(r'<span class="time">(.*?)<', re.S)  # 匹配动态发布时间
-    for i in range(times + 1):
-        try:
-            print(str(i / times * 100) + '%')
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")  # 往下滑动一次
-            time.sleep(random.random())
-        except:
+
+    last_height = driver.execute_script("return document.body.scrollHeight")
+
+    while True:
+        # Scroll down to bottom
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+        # Wait to load page
+        time.sleep(random.random())
+
+        # Calculate new scroll height and compare with last scroll height
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
             break
+        last_height = new_height
+
     html = driver.page_source
-    
+
     dynamic += re.findall(d, html)
     T += re.findall(t, html)
     return dynamic, T
@@ -122,7 +131,7 @@ def getmain(cookies, uid, conn, table_data, table_user):
     time.sleep(2)
     driver.get("https://m.weibo.cn/p/100505" + str(uid) + "#feedtop")
     time.sleep(2)
-    dynamics, times = execute_times(driver, 300)
+    dynamics, times = execute_times(driver)
     time.sleep(2)
     driver.close()
 
