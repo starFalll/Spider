@@ -27,17 +27,37 @@ source env.sh
 
 ### 代码运行流程：
 
-0.若是使用的虚拟环境，每次运行前使用 `source env.sh` 命令进入虚拟环境
+有两个爬虫程序  **sina_spider.py** 和 **weibo_spider.py** ，区别在于 weibo_spider.py 使用了 selenium ，可以自动登录并且访问网址不容易出现403，但是该程序要慢一些。所以建议首选 sina_spider.py，如果出现403，再改用weibo_spider.py。两个程序爬取的结果是一样的。
 
-1.首先根据自己的情况修改 [conf.yaml](https://github.com/starFalll/Spider/blob/master/weibo/conf.yaml) ，该文件内有详细说明，关于 uid 和 cookie的获取请见[这篇文章](https://blogof33.com/post/11/)
+- 采用 **sina_spider.py** 爬取的运行顺序： 
 
-2.然后运行 **Create_all.py** 创建MySQL表
+> 0.若是使用的虚拟环境，每次运行前使用 `source env.sh` 命令进入虚拟环境
+>
+> 1.首先根据自己的情况修改 [conf.yaml](https://github.com/starFalll/Spider/blob/master/weibo/conf.yaml) ，该文件内有详细说明，关于 uid 和 cookie的获取请见[这篇文章](https://blogof33.com/post/11/)
+>
+> 2.然后运行 **Create_all.py** 创建MySQL表
+>
+> 3.接着运行 **sina_spider.py** 爬取微博用户资料和动态并保存在数据库中
+>
+> 4.然后分别运行 **Data_analysis.py** ，**LDA_Analysis.py** 对数据进行处理
+>
+> 5.得到数据处理结果（默认为 weibo.jpg，weibo_wordfrq.html，weibo_dynamic.html，lda.html）
 
-3.接着运行 **sina_spider.py** 爬取微博用户资料和动态并保存在数据库中
+- 采用 **weibo_spider.py** 爬取的运行顺序：
 
-4.然后分别运行 **Data_analysis.py** ，**LDA_Analysis.py** 对数据进行处理
-
-5.得到数据处理结果（默认为 weibo.jpg，weibo_wordfrq.html，weibo_dynamic.html，lda.html）
+>0.安装浏览器驱动，请先阅读[我的这篇文章](https://blogof33.com/post/12/)
+>
+>1.若是使用的虚拟环境，每次运行前使用 `source env.sh` 命令进入虚拟环境
+>
+>2.首先根据自己的情况修改 [conf.yaml](https://github.com/starFalll/Spider/blob/master/weibo/conf.yaml) ，该配置文件内有详细说明，不需要cookies，但是需要填写用户名和密码
+>
+>3.然后运行 **Create_all.py** 创建MySQL表
+>
+>4.接着运行 **weibo_spider.py** 爬取微博用户资料和动态并保存在数据库中
+>
+>5.然后分别运行 **Data_analysis.py** ，**LDA_Analysis.py** 对数据进行处理
+>
+>6.得到数据处理结果（默认为 weibo.jpg，weibo_wordfrq.html，weibo_dynamic.html，lda.html）
 
 具体说明请见源码。
 
@@ -57,11 +77,10 @@ source env.sh
 
 *UI:*
 
-*      生成良好的UI数据分析与展示界面
-  ​
-  *更多功能还在开发中，程序也在不断重构中....*
-  *代码行数++*
+- 生成良好的UI数据分析与展示界面
 
+*更多功能还在开发中，程序也在不断重构中....*
+*代码行数++*
 
 ## 代码结构
 
@@ -84,9 +103,9 @@ source env.sh
         |── get_cookies.py			#模拟登录微博并获取cookies
         ├── __init__.py
         ├── requirements.txt		#项目依赖文件
-        ├── sina_spider.py			#爬取微博用户资料和动态并保存在数据库中
+        ├── sina_spider.py			#爬取微博用户资料和动态并保存在数据库中(速度快)
         └── weibo_spider.py			#爬取微博用户资料和动态并保存在数据库中(效果好)
-    
+
 ## 数据分析示例
 
 词云：

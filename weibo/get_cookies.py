@@ -26,17 +26,16 @@ def get():
                 driver.find_element_by_xpath('//*[@id="pl_login_form"]/div/div[3]/div[2]/div/input').send_keys(
                     password[i])
                 driver.find_element_by_xpath('//*[@id="pl_login_form"]/div/div[3]/div[6]/a').click()
+
                 driver.find_element_by_xpath('//*[@id="pl_login_form"]/div/div[3]/div[3]/div/input').send_keys(
                     input("输入验证码： "))
 
                 time.sleep(1)
                 driver.find_element_by_xpath('//*[@id="pl_login_form"]/div/div[3]/div[6]/a').click()
             except Exception as e:
-                print("验证码输入错误,请重新输入!")
-                driver.find_element_by_xpath('//*[@id="pl_login_form"]/div/div[3]/div[3]/div/input').send_keys(
-                    input("输入验证码： "))
+                print(e)
                 time.sleep(1)
-                driver.find_element_by_xpath('//*[@id="pl_login_form"]/div/div[3]/div[6]/a').click()
+
             cookies = driver.get_cookies()
             print(cookies)
             pickle.dump(cookies, f)
