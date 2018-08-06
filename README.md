@@ -61,7 +61,17 @@ source env.sh
 
 具体说明请见源码。
 
+## 本项目系列文章
 
+关于本项目代码以及处理的具体思路可以阅读作者的这三篇文章：
+
+[爬虫实战（一）：爬取微博用户信息](https://blogof33.com/post/11/)
+
+[爬虫实战（二）：Selenium 模拟登录并爬取信息](https://blogof33.com/post/12/)
+
+[爬虫实战（三）：微博用户信息分析](https://blogof33.com/post/13/)
+
+更为详细的说明请见源码及注释。
 
 ## 微博用户信息分析
 
@@ -124,3 +134,6 @@ source env.sh
 
 ![lda.gif](https://i.loli.net/2018/06/17/5b263614bb666.gif)
 
+## 协议
+
+本项目遵从[MIT协议](https://github.com/starFalll/Spider/blob/master/LICENSE)

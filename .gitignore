@@ -4,4 +4,4 @@ __pycache__
 phone.txt
 *.html
 *.json
-
+weibo/.env
