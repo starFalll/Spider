@@ -1,7 +1,7 @@
 # Spider
 新浪微博爬虫(Sina weibo spider)，百度搜索结果 爬虫
 
-
+（有疑问请发 [Issue](https://github.com/starFalll/Spider/issues/new)，邮件可能无法及时回复）
 
 ## 使用方法：
 
@@ -49,7 +49,7 @@ source env.sh
 >
 >1.若是使用的虚拟环境，每次运行前使用 `source env.sh` 命令进入虚拟环境
 >
->2.首先根据自己的情况修改 [conf.yaml](https://github.com/starFalll/Spider/blob/master/weibo/conf.yaml) ，该配置文件内有详细说明，不需要cookies，但是需要填写用户名和密码
+>2.首先根据自己的情况修改 [conf.yaml](https://github.com/starFalll/Spider/blob/master/weibo/conf.yaml) ，该配置文件内有详细说明，不需要cookies，但是需要填写用户名和密码，修改目标uid，然后可以根据需要修改 MySQL 配置
 >
 >3.然后运行 **Create_all.py** 创建MySQL表
 >
