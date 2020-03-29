@@ -143,6 +143,9 @@ def getmain(res,uid,table,conn,url,user_agents, cookies,conf,use_proxies=False):
     dys = re.findall(dynamic,res.text)
     ts = re.findall(times,res.text)
     pages = re.findall(page_number,res.text)
+    if(len(pages) <= 0):
+        print('\033[1;31mERROR!!! uid:'+str(uid)+' does not have page_number tags. Skip this uid...\033[0m')
+        return
     pagenums=pages[0]
     print(pagenums)
 
